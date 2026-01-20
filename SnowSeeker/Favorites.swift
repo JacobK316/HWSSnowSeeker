@@ -16,7 +16,11 @@ class Favorites {
     private let key = "Favorites"
     
     init() {
-        // load our saved data
+        if let data = UserDefaults.standard.data(forKey: key) {
+            if let result = try? JSONDecoder().decode(Set<String>.self, from: data) {
+                resorts = result
+            }
+        }
         
         // still here? Use an empty array
         resorts = []
@@ -36,9 +40,12 @@ class Favorites {
     // removes the resort from our set and saves the changes
     func remove(_ resort: Resort) {
         resorts.remove(resort.id)
+        save()
     }
     
     func save() {
-        // write out the data
+        if let data = try? JSONEncoder().encode(resorts) {
+            UserDefaults.standard.set(data, forKey: key)
+        }
     }
 }
