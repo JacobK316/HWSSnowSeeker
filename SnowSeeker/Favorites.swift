@@ -16,14 +16,13 @@ class Favorites {
     private let key = "Favorites"
     
     init() {
-        if let data = UserDefaults.standard.data(forKey: key) {
-            if let result = try? JSONDecoder().decode(Set<String>.self, from: data) {
+        if let data = UserDefaults.standard.data(forKey: key),
+            let result = try? JSONDecoder().decode(Set<String>.self, from: data) {
                 resorts = result
-            }
+        } else {
+            // still here? Use an empty array
+            resorts = []
         }
-        
-        // still here? Use an empty array
-        resorts = []
     }
     
     // returns true if our set contains this resort
